@@ -44,4 +44,4 @@ jobs:
           python -m venv ./venv/
           source ./venv/bin/activate
           pip install -e .
-          tf --output="fixtures"
+          tf --output="fixtures" --test-categories vm
