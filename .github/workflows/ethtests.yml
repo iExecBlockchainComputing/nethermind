@@ -39,7 +39,7 @@ jobs:
           echo $GITHUB_WORKSPACE/bin >> $GITHUB_PATH
       - name: Gen
         run: |
-          cd execution-spec-tests
+          #cd execution-spec-tests
           python -m venv ./venv/
           source ./venv/bin/activate
           pip install -e .
