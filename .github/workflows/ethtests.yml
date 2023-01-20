@@ -1,0 +1,46 @@
+name: Ethereum spec tests
+
+on:
+  push:
+    branches: ['test/eth-tests']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: ethereum/execution-spec-tests
+          submodules: true
+      - name: Checkout go-ethereum
+        uses: actions/checkout@v3
+        with:
+          repository: ethereum/go-ethereum
+          path: go-ethereum
+      - name: Setup golang
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.18
+      - name: Build evm cmd
+        run: |
+          mkdir -p $GITHUB_WORKSPACE/bin
+          cd $GITHUB_WORKSPACE/go-ethereum/cmd/evm
+          go build .
+          echo $GITHUB_WORKSPACE/go-ethereum/cmd/evm >> $GITHUB_PATH
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.10
+      - name: Install solc compiler
+        run: |
+          RELEASE_NAME=$(curl https://binaries.soliditylang.org/linux-amd64/list.json | jq -r --arg SOLC_VERSION "0.8.17" '.releases[$SOLC_VERSION]')
+          wget -O $GITHUB_WORKSPACE/bin/solc https://binaries.soliditylang.org/linux-amd64/$RELEASE_NAME
+          chmod a+x $GITHUB_WORKSPACE/bin/solc
+          echo $GITHUB_WORKSPACE/bin >> $GITHUB_PATH
+      - name: Gen
+        run: |
+          cd execution-spec-tests
+          python -m venv ./venv/
+          source ./venv/bin/activate
+          pip install -e .
+          tf --output="fixtures"
