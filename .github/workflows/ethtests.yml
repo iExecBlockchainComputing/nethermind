@@ -28,9 +28,9 @@ jobs:
           go build .
           echo $GITHUB_WORKSPACE/go-ethereum/cmd/evm >> $GITHUB_PATH
       - name: Setup Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
-          python-version: 3.10
+          python-version: '3.10'
       - name: Install solc compiler
         run: |
           RELEASE_NAME=$(curl https://binaries.soliditylang.org/linux-amd64/list.json | jq -r --arg SOLC_VERSION "0.8.17" '.releases[$SOLC_VERSION]')
