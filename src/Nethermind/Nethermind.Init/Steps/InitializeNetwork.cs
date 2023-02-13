@@ -207,7 +207,7 @@ public class InitializeNetwork : IStep
             _api.ProtocolsManager!.AddSupportedCapability(new Capability(Protocol.Eth, 67));
 
             // eth68 is disabled for now, as spec has draft status and can change (https://eips.ethereum.org/EIPS/eip-5793)
-            // _api.ProtocolsManager!.AddSupportedCapability(new Capability(Protocol.Eth, 68));
+            _api.ProtocolsManager!.AddSupportedCapability(new Capability(Protocol.Eth, 68));
         }
         else if (_logger.IsDebug) _logger.Debug("Skipped enabling eth67 capability");
 
