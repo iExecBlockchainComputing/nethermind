@@ -1,8 +1,10 @@
 // SPDX-FileCopyrightText: 2022 Demerzel Solutions Limited
 // SPDX-License-Identifier: LGPL-3.0-only
 
+using System;
 using System.ComponentModel;
 using System.Runtime.Serialization;
+using Nethermind.Core.Crypto;
 using Nethermind.Int256;
 
 namespace Nethermind.Blockchain
@@ -60,5 +62,21 @@ namespace Nethermind.Blockchain
         [Description("The estimated highest block available.")]
         [DataMember(Name = "ethereum_best_known_block_number")]
         public static long BestKnownBlockNumber { get; set; }
+
+        [Description("First 8 bytes of the last block hash.")]
+        public static ulong First8BytesOfLastBlockHash { get; set; }
+
+        /// <summary>
+        /// Sets the first 8 bytes of the last block hash. The hash is truncated
+        /// to only 64 bits and converted to "ulong" because Prometheus does not
+        /// support string values.
+        /// </summary>
+        /// <param name="hash">Hash of the block.</param>
+        public static void SetFirst8BytesOfLastBlockHash(Hash256 hash)
+        {
+            byte[] first8Bytes = new byte[8];
+            Array.Copy(hash.BytesToArray(), 0, first8Bytes, 0, 8);
+            First8BytesOfLastBlockHash = BitConverter.ToUInt64(first8Bytes, 0);
+        }
     }
 }

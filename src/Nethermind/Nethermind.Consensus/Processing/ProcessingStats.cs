@@ -69,6 +69,7 @@ namespace Nethermind.Consensus.Processing
             Metrics.ProcessingQueueSize = blockQueueSize;
 
             Metrics.BlockchainHeight = block.Header.Number;
+            Metrics.SetFirst8BytesOfLastBlockHash(block.Hash);
             Metrics.BestKnownBlockNumber = blockTreeCtx.BestKnownNumber;
 
             long currentTicks = _processingStopwatch.ElapsedTicks;
