@@ -72,10 +72,10 @@ namespace Nethermind.Blockchain
         /// support string values.
         /// </summary>
         /// <param name="hash">Hash of the block.</param>
-        public static void SetFirst8BytesOfLastBlockHash(Hash256 hash)
+        public static void SetFirst8BytesOfLastBlockHash(Keccak hash)
         {
             byte[] first8Bytes = new byte[8];
-            Array.Copy(hash.BytesToArray(), 0, first8Bytes, 0, 8);
+            Array.Copy(hash.Bytes, 0, first8Bytes, 0, 8);
             First8BytesOfLastBlockHash = BitConverter.ToUInt64(first8Bytes, 0);
         }
     }
